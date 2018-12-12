@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewBag.Title = "EditDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class=" row">
+        <h2>EditDetails</h2>
+
+
+        <form>
+            <div class="form-group">
+                <label for="AuthorInput">Author</label>
+                <input type="text" class="form-control" id="AuthorInput" >
+            </div>
+            <div class="form-group">
+                <label for="TitleInput">Title</label>
+                <input type="text" class="form-control" id="TitleInput" >
+            </div>
+            <div class="form-group">
+
+                <label for="body_Text">Body</label>
+                <textarea class="form-control" id="body_Text" ></textarea>
+
+            </div>
+            <button class="btn btn-primary" id="btn_edit">Edit</button>
+            <button class="btn btn-primary" id="btn_dlt">Delete</button>
+        </form>
+
+    </div>
+
+</div>
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var title = "";
+            var created = "";
+            var body = "";
+            var author = "";
+            var created;
+
+            $.ajax({
+                contentType: 'application/json',
+                type: "GET",
+                url: "/api/GetBlog",
+                data: {
+                    "id": @ViewData["PostID"]
+
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $("#TitleInput").val(data.title);
+                    $("#AuthorInput").val(data.author);
+                   
+                    $("#body_Text").append(data.body);
+                    created = data.created;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(" problem");
+                }
+            });
+
+            $('#btn_edit').click(function () {
+                var id = @ViewData["PostID"];
+                var title = $("#TitleInput").val();
+                console.log(title);
+                var author = $("#AuthorInput").val();
+
+
+                console.log(author);
+                var body = $("#body_Text").val();
+                var dataObj = { Id: id, author: author, created: created, title: title, body: body };
+                var obj = JSON.stringify(dataObj);
+                console.log(obj);
+                 $.ajax({
+                contentType: 'application/json',
+                     type: "PUT",
+                     dataType:"json",
+                     url: "/api/PutBlog/" + id,
+                     data: obj,
+                         
+
+                        
+                           
+
+                         
+                         
+
+
+                
+                     success: function (data, textStatus, jqXHR) {
+                         console.log("happiness");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(" problem");
+                }
+            });
+
+
+
+            });
+
+            $('#btn_dlt').click(function () {
+
+
+              
+                var dataToSend = JSON.stringify({ 'id': @ViewData["PostID"].ToString() });
+                $.ajax({
+                    contentType: 'application/json',
+                    type: "DELETE",
+                    url: "/api/DeleteBlog/"+@ViewData["PostID"],
+                    data: dataToSend
+                        
+
+                        
+
+
+
+
+
+
+                    ,
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("happiness");
+                        console.log(data);
+                        var url = '@Url.Action("BlogList", "Home")';
+                        location.href = url;
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(" problem");
+
+                    }
+                });
+
+
+
+                
+
+            });
+
+
+
+
+        });
+
+
+
+
+
+
+
+    </script>
+
+
+
+}
+
+
+
+
+
+
+
+
+

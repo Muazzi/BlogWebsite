@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "BlogList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+
+
+    <table class="table" id="blogTable">
+        <thead>
+            <tr>
+                <th>Blog title</th>
+                <th>View blog</th>
+                <th>Edit/delete blog</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            
+            $.ajax({
+                contentType: 'application/json',
+                type: "GET",
+                url: "/api/GetBlogs",
+                success: function (data, textStatus, jqXHR) {
+                    data.forEach(function (blog) {
+                        $("#blogTable tbody").append(
+                            BlogBuildTableRow(blog));
+
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    // $("#getPeopleResult").val(jqXHR.statusText);
+                }
+            });
+
+            function BlogBuildTableRow(blog) {
+
+                
+                var url = '@Url.Action("Details", "Home", new { id = 1 })';
+                var eurl='@Url.Action("EditDetails", "Home", new { id = 1})';
+                url = url.replace("1", blog.Id);
+                eurl = eurl.replace("1", blog.Id);
+                var ret =
+                    "<tr>" +
+                    "<td>" + blog.title + "</td>" 
+
+                    + "<td> <a href='" + url + "'>View</a>  </td>" +
+                    "<td> <a href='" + eurl + "'>Edit/delete</a>  </td>"+
+                    "</tr>";
+                return ret;
+            }
+
+
+            function handleException(request, message,
+                error) {
+                var msg = "";
+                msg += "Code: " + request.status + "\n";
+                msg += "Text: " + request.statusText + "\n";
+                if (request.responseJSON != null) {
+                    msg += "Message" +
+                        request.responseJSON.Message + "\n";
+                }
+                alert(msg);
+            }
+
+            function product() {
+                // Call Web API to get a list of Product
+                $.ajax({
+                    url: '/api/Product/',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (products) {
+                        productListSuccess(products);
+                    },
+                    error: function (request, message, error) {
+                        handleException(request, message, error);
+                    }
+                });
+            }
+
+
+
+
+        });
+    </script>
+}
+
+
+
+
+

@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class=" row">
+        <h2>Blog Details</h2>
+
+        <h3>Title</h3>
+        <h4 id="b_title"> </h4>
+        <h3>Author</h3>
+        <h4 id="b_author"> </h4>
+        <h3>Created</h3>
+        <h4 id="b_created"> </h4>
+        <h3>body</h3>
+        <p class="lead" id="b_body">
+
+        </p>
+
+    </div>
+
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var title = "";
+            var created = "";
+            var body = "";
+            var author = "";
+
+            $.ajax({
+                contentType: 'application/json',
+                type: "GET",
+                url: "/api/GetBlog",
+                data: {
+                    "id": @ViewData["PostID"]
+
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $("#b_title").append(data.title);
+                    $("#b_author").append(data.author);
+                    $("#b_created").append(data.created);
+                    $("#b_body").append(data.body);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("");
+                }
+            });
+
+
+        });
+
+
+
+
+
+
+
+    </script>
+
+
+
+    }
+
