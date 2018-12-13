@@ -8,17 +8,31 @@
 
 <div class="container">
 
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h4>All Blogs</h4>
 
-    <table class="table" id="blogTable">
-        <thead>
-            <tr>
-                <th>Blog title</th>
-                <th>View blog</th>
-                <th>Edit/delete blog</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+                </div>
+
+                <table class="table table-striped" id="blogTable">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>View blog</th>
+                            <th>Edit/delete blog</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+    
 </div>
 
 
@@ -52,7 +66,8 @@
                 eurl = eurl.replace("1", blog.Id);
                 var ret =
                     "<tr>" +
-                    "<td>" + blog.title + "</td>" 
+                    "<td>" + blog.title + "</td>" +
+                    "<td>" + blog.author + "</td>" 
 
                     + "<td> <a href='" + url + "'>View</a>  </td>" +
                     "<td> <a href='" + eurl + "'>Edit/delete</a>  </td>"+
